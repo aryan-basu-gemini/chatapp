@@ -45,7 +45,17 @@ def message(request,id):
     
     clicked_data=Userdetails.objects.filter(id=id).values()
     email_to=clicked_data[0]['email']
-    
+    message1=Chat.objects.filter(from_message=email_from,to_message=email_to)
+    message2=Chat.objects.filter(from_message=email_to,to_message=email_from)
+    data1=[]
+    data2=[]
+    if message1:
+        data1=message1[0].message
+    if message2:
+        data2=message2[0].message
+
+
+
     if request.method=="POST":
         message=Chat.objects.filter(from_message=email_from,to_message=email_to)
         
@@ -65,5 +75,5 @@ def message(request,id):
             temp.append(temp_message)
             message.update(message=temp)
         
-    return render(request,'message.html')
+    return render(request,'message.html',{'data1':data1,'data2':data2})
 # Create your views here.
