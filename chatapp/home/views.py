@@ -1,12 +1,20 @@
 from django.shortcuts import render,redirect
-from .models import Userdetails
+from .models import Userdetails,Chat
 
+name_from=''
 def home(request):
     if request.method=="POST":
         email=request.POST.get('email')
         password=request.POST.get('password')
+        x=Userdetails.objects.filter(email=email,password=password).values()
+        
+        
         if Userdetails.objects.filter(email=email,password=password).count():
-            return render(request,'index.html')
+            data=Userdetails.objects.exclude(email=email,password=password)
+            
+            global email_from
+            email_from=x[0]['email']
+            return render(request,'index.html',{'data':data})
         else:
             return render(request,'login.html')
 
@@ -26,10 +34,36 @@ def signup(request):
         userdetail.email=email
         userdetail.password=password
         userdetail.save()
-       
+        global email_from
+        email_from=email
         return render(request,'index.html')
           
     return render(request,'signup.html')
 def index(request):
     return render(request,'index.html')
+def message(request,id):
+    
+    clicked_data=Userdetails.objects.filter(id=id).values()
+    email_to=clicked_data[0]['email']
+    
+    if request.method=="POST":
+        message=Chat.objects.filter(from_message=email_from,to_message=email_to)
+        
+        
+        if not message:
+            temp=[]
+            temp_message=request.POST.get('message')
+            temp.append(temp_message)
+            chat=Chat()
+            chat.from_message=email_from
+            chat.message=temp
+            chat.to_message=email_to
+            chat.save()
+        else:
+            temp=message[0].message
+            temp_message=request.POST.get('message')
+            temp.append(temp_message)
+            message.update(message=temp)
+        
+    return render(request,'message.html')
 # Create your views here.
