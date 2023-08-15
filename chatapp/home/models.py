@@ -14,3 +14,4 @@ class Chat(models.Model):
     from_message = models.CharField(max_length=40)
     message = ArrayField(models.CharField(max_length=1000))
     to_message = models.CharField(max_length=40)
+    timestamp = ArrayField(models.CharField(max_length=1000), blank=True, null=True)

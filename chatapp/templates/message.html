@@ -19,29 +19,36 @@
         <![endif]-->
         <h1>message</h1>
 
-        <tr>
-            {%for x in data1 %}
-            
-            <p>{{x}}<p>
-      
+        <div class="container">
+            <table class="table">
+                <tr class="mt-2">
+
+                
+                    <th>Message</th>
+                    <th>Time</th>
+                    <th>Flag</th>
+                  
+                        
+                </tr>
+                
+                    <tr>
+                        {%for x in data %}
+                        
+                        <td>{{x.Message}}</td>
+                        <td>{{x.Time}}</td>
+                        <td>{{x.Flag}}</td>
+                       
+                      
+                  
+                  
+                </tr>
+                {% endfor %} 
+              
+        
+                
+            </table>
           
-      
-      
-    </tr>
-    {% endfor %}
-
- <h2>dusra message</h2>
-
- <tr>
-    {%for x in data2 %}
-    
-    <p>{{x}}<p>
-
-  
-
-
-</tr>
-{% endfor %}
+        </div>
         <form method='POST'>
             {% csrf_token %}
             <textarea name='message' id="w3review" name="w3review" rows="4" cols="50"></textarea>
